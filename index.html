@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>飲料店抽籤器</title>
+    <style>
+        #area1{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top:60px;
+        }
+        #area2{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top:60px;
+        }
+        #area3{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top:60px;
+        }
+        #container {
+            display: flex;                 /* 變成彈性盒子 */
+            justify-content: space-between; /* 左右兩端對齊 */
+            align-items: center;           /* 垂直置中（可選） */
+            width: 100%;                   /* 可視需求調整寬度 */
+            padding-top:60px;
+
+        }
+        /* 左半邊，放圖片 */
+        #area4 {
+          flex: 1; /* 左右平分 */
+          background-color: #f9f9f9;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          padding: 10px;
+        }
+        #area4 img {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain; /* 保持比例完整顯示 */
+          display: block;
+        }
+        /* 右半邊，放地圖 */
+        #area5 {
+          flex: 1;
+          background-color: #eaeaea;
+          padding: 10px;
+        }
+        #area5 iframe {
+          width: 100%;
+          height: 100%;
+          border: 0;
+        }
+        #choose1{
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+        #lucky-draw{
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            text-align: center;
+            border: none;
+            background-color: #ADD8E6;
+            padding: 5px 10px;
+            font-size: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        #lucky-draw:hover{
+            background-color: #A9A9A9;
+        }
+        a{
+             text-decoration: none;
+             color:#DEB887;
+        }
+        a:hover {
+          color: #A9A9A9;
+          cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="area1">
+      <select id="choose1">
+        <option value="台師大">台師大</option>
+        <option value="高雄大學">高雄大學</option>
+        <option value="輔仁大學">輔仁大學</option>
+      </select>
+    </div>
+    <div id="area2">
+      <button id="lucky-draw" onclick="pickRandom()">喝什麼</button>
+    </div>
+    <div id="area3"></div>           <!--店家名稱-->
+    <div id="container">
+        <div id="area4"></div>       <!--菜單-->
+        <div id="area5"></div>       <!--地圖-->
+    </div>
+
+    <script>
+        function pickRandom(){
+           fetch('teashop.json')                    //用fetch會回傳一個response
+           .then(response => response.json())      //將response轉成json格式
+           .then(data => {                         //再將轉完的東西丟給data
+           const school = document.getElementById("choose1").value;
+           const shopList = data[school];
+           const pick = shopList[Math.floor(Math.random() * shopList.length)];  //在shoplist隨機摻出一個數字然後用索引
+           document.getElementById("area3").innerHTML =`
+            <h1>${pick.name}</h1>
+            <h3><a href="${pick.url}" target="_blank">官網(會有新品、季節飲品)</a></h3>`
+           document.getElementById("area4").innerHTML = `<img src="${pick.picture}" alt="菜單無法顯示">`;
+           document.getElementById("area5").innerHTML = pick.map;
+        });
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
