@@ -106,7 +106,7 @@
 
     <script>
         function pickRandom(){
-           fetch('teashop.json')                    //用fetch會回傳一個response
+           fetch('teashop.json?'+ Date.now())                    //用fetch會回傳一個response
            .then(response => response.json())      //將response轉成json格式
            .then(data => {                         //再將轉完的東西丟給data
            const school = document.getElementById("choose1").value;
